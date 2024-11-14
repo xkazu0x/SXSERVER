@@ -22,22 +22,23 @@ int main() {
 
 	struct sockaddr_in client_address;
 	int client_size = sizeof(client_address);
-	SOCKET client_socket = accept(server_socket,
-								  (SOCKADDR *)&client_address,
-								  &client_size);
+    SOCKET client_socket = accept(server_socket,
+                                  (SOCKADDR *)&client_address,
+                                  &client_size);
 
 	char host[NI_MAXHOST] = {0};
 	char service[NI_MAXSERV] = {0};
 
-	if (getnameinfo((SOCKADDR*)&client_address,	client_size, host, NI_MAXHOST, service,NI_MAXSERV, 0) == 0) {
+	if (getnameinfo((SOCKADDR*)&client_address, client_size, host, NI_MAXHOST, service,NI_MAXSERV, 0) == 0) {
 		printf("%s connected on port %s\n", host, service);
 	} else {
 		inet_ntop(AF_INET, &client_address.sin_addr, host, NI_MAXHOST);
 		printf("%s connected on port %hu\n", host, ntohs(client_address.sin_port));
 	}
 
-	closesocket(server_socket);
+	//closesocket(server_socket);
 
+	/*
 	char buffer[256];
 	while (true) {
 		ZeroMemory(buffer, 256);
@@ -54,10 +55,10 @@ int main() {
 
 		send(client_socket, buffer, bytes_received + 1, 0);
 	}
+	*/
 
-	closesocket(client_socket);
+ 	//closesocket(client_socket);
 	
-	/*
 	char request[256] = {0};
 	recv(client_socket, request, 256, 0);
 
@@ -67,7 +68,6 @@ int main() {
 		fread(buffer, 1, 256, file);
 		send(client_socket, buffer, 256, 0);
 	}
-	*/
 	
 	WSACleanup();
 	return 0;
